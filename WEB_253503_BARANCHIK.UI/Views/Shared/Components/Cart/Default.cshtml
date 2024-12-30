@@ -1,0 +1,7 @@
+﻿<div class="cart-info navbar-text ms-auto">
+    <a href="@Url.Action("ViewCart", "Cart")" style="color: white;">
+        <span>@Model.TotalPrice.ToString("0.00") руб</span>
+        <i class="fa-solid fa-cart-shopping" style="color: white"></i>
+        <span>(@Model.Count)</span>
+    </a>
+</div>

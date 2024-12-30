@@ -1,0 +1,33 @@
+﻿@page "/rooms"
+@inject IDataService DataService
+@using Microsoft.AspNetCore.Authorization
+@using WEB_253503_BARANCHIK.BlazorWasm.Services.DataService
+@using WEB_253503_BARANCHIK.BlazorWasm.Shared
+@using WEB_253503_BARANCHIK.Domain.Entities
+
+<h3>Rooms</h3>
+
+<CategorySelector />
+
+<RoomList RoomSelected="OnRoomSelected" />
+
+
+<RoomPager/>
+
+<RoomDetails SelectedRoom="SelectedRoom" />
+
+@code {
+    public Room SelectedRoom { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DataService.GetRoomCategoryListAsync();
+        await DataService.GetRoomListAsync();
+    }
+
+    void OnRoomSelected(int id)
+    {
+        Console.WriteLine(id);
+        SelectedRoom = DataService.Rooms.FirstOrDefault(t => t.Id == id);
+    }
+}

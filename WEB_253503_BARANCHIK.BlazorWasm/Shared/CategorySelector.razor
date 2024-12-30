@@ -1,0 +1,40 @@
+﻿@using WEB_253503_BARANCHIK.BlazorWasm.Services.DataService
+@using WEB_253503_BARANCHIK.Domain.Entities
+@inject IDataService DataService
+@implements IDisposable
+
+<div class="mb-3">
+    <label for="categorySelect" class="form-label">Выберите категорию:</label>
+    <select id="categorySelect" class="form-select" @onchange="OnCategoryChange">
+        <option value="" >-- Выберите категорию --</option>
+        @foreach (var category in @DataService.Categories)
+        {
+            <option value="@category.NormalizedName" selected="@(category == @DataService.SelectedCategory)">@category.Name</option>
+        }
+    </select>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+
+    private async Task OnCategoryChange(ChangeEventArgs e)
+    {
+        var selectedCategoryName = e.Value.ToString();
+        RoomCategory selectedCategory = null;
+
+        if (selectedCategoryName != "")
+        {
+             selectedCategory = DataService.Categories.FirstOrDefault(c => c.NormalizedName == selectedCategoryName);
+        }
+
+        DataService.SelectedCategory = selectedCategory;
+        await DataService.GetRoomListAsync();
+    }
+}

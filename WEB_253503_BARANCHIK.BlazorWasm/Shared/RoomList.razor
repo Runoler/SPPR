@@ -1,0 +1,43 @@
+﻿@inject IDataService DataService
+@using WEB_253503_BARANCHIK.BlazorWasm.Services.DataService
+@implements IDisposable
+
+@if (@DataService.Rooms == null)
+{
+    <p><em>Загрузка...</em></p>
+}
+else if (@DataService.Rooms.Count == 0)
+{
+    <p><em>Объекты не найдены.</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var obj in @DataService.Rooms)
+        {
+            <li>
+                <div>
+                    <h3>@obj.Name</h3>
+                    <h6>@obj.Description</h6>
+                </div>
+                <button class="btn btn-primary" @onclick="() => RoomSelected.InvokeAsync(obj.Id)">
+                    <span class="oi oi-eye" title="View" >Детали</span> 
+                </button>
+            </li>
+
+        }
+    </ul>
+}
+
+@code {
+    [Parameter] public EventCallback<int> RoomSelected { get; set; }
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

@@ -1,0 +1,6 @@
+@WEB_253503_Baranchik.API_HostAddress = http://localhost:5287
+
+GET {{WEB_253503_Baranchik.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,30 @@
+﻿@model Cart
+
+<h2>Корзина</h2>
+
+<div class="cart-items">
+    @if (Model.CartItems.Count == 0)
+    {
+        <p>Корзина пуста</p>
+    }
+    else
+    {
+        foreach (var item in Model.CartItems)
+        {
+            <div class="cart-item">
+                <span>@item.Value.Room.Name</span>
+                <span>@item.Value.Room.Cost.ToString("0.00") руб</span>
+                <span>Количество: @item.Value.Count</span>
+                <form method="post" action="@Url.Action("RemoveFromCart", "Cart", new { id = item.Key })">
+                    <button type="submit">Удалить</button>
+                </form>
+            </div>
+        }
+    }
+</div>
+
+<div class="cart-total">
+    <span>Итого: @Model.TotalPrice.ToString("0.00") руб</span>
+</div>
+
+<a href="@Url.Action("Index", "Room")">Вернуться к покупкам</a>

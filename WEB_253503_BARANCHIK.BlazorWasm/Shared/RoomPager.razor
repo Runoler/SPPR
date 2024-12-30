@@ -1,0 +1,33 @@
+﻿@using WEB_253503_BARANCHIK.BlazorWasm.Services.DataService
+@inject IDataService DataService
+@implements IDisposable
+
+<div class="pagination">
+    @if (DataService.TotalPages > 1)
+    {
+        for (int i = 1; i <= DataService.TotalPages; i++)
+        {
+            int index = i;
+            <button class="btn btn-primary @((i == DataService.CurrentPage) ? "active" : "")" @onclick="() => OnPageChange(index)">
+                @i
+            </button>
+        }
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+    private async Task OnPageChange(int pageNumber)
+    {
+        Console.WriteLine(pageNumber);
+        DataService.CurrentPage = pageNumber;
+        await DataService.GetRoomListAsync(pageNumber);
+    }
+}

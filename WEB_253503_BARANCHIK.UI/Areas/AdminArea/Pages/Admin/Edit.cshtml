@@ -1,0 +1,79 @@
+﻿@page
+@using System.Security.Claims
+@model WEB_253503_BARANCHIK.UI.Areas.AdminArea.Views.Admin.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    var roles = User.Claims
+        .Where(c => c.Type == ClaimTypes.Role)
+        .Select(c => c.Value)
+        .ToList();
+}
+
+<h1>Edit</h1>
+@*@if (roles.Contains("POWER-USER"))
+{
+    <p>Пользователь имеет роль POWER-USER.</p>
+    foreach (var role in roles)
+    {
+        <li>@role</li>
+    }
+}
+else
+{
+    <p>Пользователь не имеет роль POWER-USER.</p>
+    <p>@roles.Count</p>
+    foreach (var role in roles)
+    {
+        <li>@role</li>
+    }
+}*@
+
+<h4>Room</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Room.Id" />
+            <div class="form-group">
+                <label asp-for="Room.Name" class="control-label"></label>
+                <input asp-for="Room.Name" class="form-control" />
+                <span asp-validation-for="Room.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.Description" class="control-label"></label>
+                <input asp-for="Room.Description" class="form-control" />
+                <span asp-validation-for="Room.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.Cost" class="control-label"></label>
+                <input asp-for="Room.Cost" class="form-control" />
+                <span asp-validation-for="Room.Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.Category" class="control-label">Category</label>
+                <select asp-for="Room.Category.Id" class="form-control" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+                    <option value="">Select a category</option>
+                </select>
+                <span asp-validation-for="Room.Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="fileUpload" class="control-label">Upload Image</label>
+                <input asp-for="@Model.Image" type="file" id="Image" name="Image" class="form-control" required="false"/>
+                <span asp-validation-for="Room.Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

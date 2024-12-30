@@ -1,0 +1,18 @@
+﻿@using WEB_253503_BARANCHIK.Domain.Entities
+@if (SelectedRoom != null)
+{
+    <div>
+        <img src="@SelectedRoom.Image" />
+        <h4>@SelectedRoom.Name</h4>
+        <p>@SelectedRoom.Description</p>
+        <p>Цена: @SelectedRoom.Cost</p>
+    </div>
+}
+else
+{
+    <p>Выберите номер для просмотра деталей.</p>
+}
+
+@code {
+    [Parameter] public Room SelectedRoom { get; set; }
+}
